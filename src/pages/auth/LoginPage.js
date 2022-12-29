@@ -53,10 +53,6 @@ class LoginPage extends React.Component {
             url: links.login,
             body,
             successFunction: (data) => {
-                this.setState({
-                    showOverlay: false,
-                    showLoading: false
-                });
                 window.location.href = '/'
             },
             errorFunction: (data) => {
