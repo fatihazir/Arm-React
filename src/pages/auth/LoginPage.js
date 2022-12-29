@@ -34,6 +34,9 @@ class LoginPage extends React.Component {
 
     render() {
         return <>
+            <div className="reset-password-section text-center">
+                <h3><i className="fa fa-sign-in fa-4x"></i></h3>
+            </div>
             <form className="login-form">
                 <div className="d-flex align-items-center my-4">
                     <h1 className="text-center fw-normal mb-0 me-3">Sign In</h1>
@@ -53,7 +56,7 @@ class LoginPage extends React.Component {
                 </div>
 
                 <div className="text-center text-lg-start">
-                    <button onClick={this.Login} type="button" class="btn btn-primary btn-lg">Login</button>
+                    <button onClick={this.Login} type="button" class="btn btn-primary btn-lg">Sign in</button>
                     <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/register"
                         className="link-danger">Sign Up</a></p>
                 </div>
