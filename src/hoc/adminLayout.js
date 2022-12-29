@@ -1,20 +1,20 @@
 import React from "react";
 import Header from './../common/header';
 import Sidebar from './../common/sidebar';
-import { Preloader, Bars } from 'react-preloader-icon';
+import { Preloader, TailSpin } from 'react-preloader-icon';
 
 const adminLayout = (ChildComponent) => {
     class AdminLayout extends React.Component {
-        constructor(props){
+        constructor(props) {
             super(props);
-    
+
             this.state = {
                 pageLoaded: false,
                 saveLeadClickEvent: ""
             };
         }
 
-        componentDidMount(){
+        componentDidMount() {
             setTimeout(() => {
                 this.setState(() => ({
                     pageLoaded: true
@@ -22,18 +22,18 @@ const adminLayout = (ChildComponent) => {
             }, 1000);
         }
 
-        renderHtml(){
-            if(!this.state.pageLoaded){
+        renderHtml() {
+            if (!this.state.pageLoaded) {
                 return <div className="loading-page">
                     <div className="center">
-                        <Preloader use={Bars} size={60} strokeWidth={10} strokeColor="#f7b085" duration={600} />
+                        <Preloader use={TailSpin} size={150} strokeWidth={10} strokeColor="#f7b085" duration={600} />
                     </div>
-              </div>
+                </div>
             }
 
             return <div className="d-flex" id="wrapper">
                 {/* <!-- Sidebar--> */}
-                <Sidebar/>
+                <Sidebar />
                 {/* <!-- Page content wrapper--> */}
                 <div className="main" id="page-content-wrapper">
                     {/* <!-- Top navigation--> */}
@@ -46,19 +46,7 @@ const adminLayout = (ChildComponent) => {
             </div>
         }
 
-        addLeadModalFooterContent(){ 
-            return <>
-                <div style={{width:"100%"}}>
-                    <button onClick={(e) => this.setState(() => ({saveLeadClickEvent: (Math.random() + 1).toString(36).substring(7)}))} className="btn btn-default low-height-btn">Add Lead</button> 
-                </div>
-            </>;
-        }
-
-        handleParentData = (e) => {
-            console.log(e);
-        }
-
-        render(){
+        render() {
             return <>
                 {this.renderHtml()}
             </>
