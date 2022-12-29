@@ -4,13 +4,13 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import { Link } from 'react-router-dom';
 
 class Sidebar extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {}
     }
 
-    render(){
+    render() {
         return <div className="border-end sidenav" id="sidebar-wrapper">
             <div className="sidebar-heading border-bottom ">
                 <Link to="/">
@@ -21,7 +21,7 @@ class Sidebar extends React.Component {
                 <ul className="list-unstyled ps-0">
                     <li className="mb-1">
                         <Link tag="a" className="" to="/">
-                            <i className="fa fa-dashboard"></i> Dashboard
+                            <i className="fa fa-dashboard"></i> Associations
                         </Link>
                     </li>
                     <li className="mb-1">
@@ -32,10 +32,10 @@ class Sidebar extends React.Component {
                     <li className="border-top my-3"></li>
                     <li className="mb-1">
                         <Link tag="a" className="" to="/typography">
-                        <i className="fa fa-text-width" aria-hidden="true"></i> Typography
+                            <i className="fa fa-text-width" aria-hidden="true"></i> Typography
                         </Link>
                     </li>
-                    
+
                     {/* collapsable list item example */}
                     {/* <li className="mb-1">
                         <button className="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
@@ -51,7 +51,7 @@ class Sidebar extends React.Component {
                         </div>
                     </li> 
                     <li className="border-top my-3"></li> */}
-                   
+
                 </ul>
             </PerfectScrollbar>
             <div className="dropdown fixed-bottom-dropdown">

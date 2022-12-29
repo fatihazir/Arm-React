@@ -1,11 +1,15 @@
 import React from "react";
 import adminLayout from "../hoc/adminLayout"
 
-class DashboardPage extends React.Component {
+
+class AssociationsPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {}
+  }
+  componentDidMount() {
+    console.log("cdm")
   }
 
   render() {
@@ -80,4 +84,4 @@ class DashboardPage extends React.Component {
   }
 }
 
-export default adminLayout(DashboardPage);
+export default adminLayout(AssociationsPage);

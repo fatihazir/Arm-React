@@ -1,7 +1,10 @@
 import React from "react";
 import "../../assets/css/login.css"
-import { Link } from 'react-router-dom';
 import authLayout from "../../hoc/authLayout";
+import Apibase from "../../assets/lib/Apibase"
+import { links } from "../../assets/lib/Constants";
+import ErrorModal from './../../components/ErrorModal';
+import Loading from "../../components/Loading";
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -10,30 +13,76 @@ class LoginPage extends React.Component {
         this.state = {
             email: "",
             password: "",
+            showErrorModal: false,
+            errorModalBodyText: "",
+            showOverlay: false,
+            showLoading: false
         };
     }
 
     HandleEmailInput = (e) => {
-        console.log(e.target.value)
         this.setState({
             email: e.target.value
         });
     }
 
     HandlePasswordInput = (e) => {
-        console.log(e.target.value);
         this.setState({
             password: e.target.value
         });
     }
 
-    Login = () => {
-        console.log(this.state.email + " -- " + this.state.password);
+    CloseErrorModal = () => {
+        this.setState({
+            showErrorModal: false,
+            showOverlay: false,
+        });
     }
 
+    Login = () => {
+        this.setState({
+            showOverlay: true,
+            showLoading: true
+        });
+
+        let body = {
+            "Email": this.state.email,
+            "Password": this.state.password,
+        }
+        Apibase.Post({
+            url: links.login,
+            body,
+            successFunction: (data) => {
+                this.setState({
+                    showOverlay: false,
+                    showLoading: false
+                });
+                window.location.href = '/'
+            },
+            errorFunction: (data) => {
+                this.setState({
+                    showOverlay: true,
+                    showLoading: false,
+                    errorModalBodyText: data.message,
+                    showErrorModal: true
+                });
+            },
+            exceptionFunction: (err) => {
+                console.log("exceptionFunction data : ", err)
+                this.setState({
+                    showOverlay: true,
+                    showLoading: false,
+                    errorModalBodyText: err.toString(),
+                    showErrorModal: true
+                });
+            }
+        })
+    }
 
     render() {
         return <>
+            <Loading showOverlay={this.state.showOverlay} showLoading={this.state.showLoading} />
+            <ErrorModal show={this.state.showErrorModal} body={this.state.errorModalBodyText} firstButtonOnPress={this.CloseErrorModal} />
             <div className="reset-password-section text-center">
                 <h3><i className="fa fa-sign-in fa-4x"></i></h3>
             </div>
@@ -65,4 +114,4 @@ class LoginPage extends React.Component {
     }
 }
 
-export default authLayout(LoginPage);
+export default authLayout(LoginPage)
