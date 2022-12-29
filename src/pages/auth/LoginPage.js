@@ -15,8 +15,8 @@ class LoginPage extends React.Component {
             password: "",
             showErrorModal: false,
             errorModalBodyText: "",
-            showOverlay: false,
-            showLoading: false
+            showOverlay: true,
+            showLoading: true
         };
     }
 

@@ -22,7 +22,7 @@ function Loading({ showOverlay, showLoading }) {
             }}>
                 {showLoading && <Preloader style={{
                     position: 'absolute',
-                    left: '50%',
+                    left: '45%',
                     top: '20%',
                     bottom: 0,
                     right: 0,
