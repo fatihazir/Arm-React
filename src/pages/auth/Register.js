@@ -1,7 +1,10 @@
 import React from "react";
 import "../../assets/css/login.css"
-import { Link } from 'react-router-dom';
 import authLayout from "../../hoc/authLayout";
+import Apibase from "../../assets/lib/Apibase"
+import { links } from "../../assets/lib/Constants";
+import ErrorModal from './../../components/ErrorModal';
+import Loading from "../../components/Loading";
 
 class Register extends React.Component {
   constructor(props) {
@@ -13,6 +16,10 @@ class Register extends React.Component {
       email: "",
       password: "",
       passwordAgain: "",
+      showErrorModal: false,
+      errorModalBodyText: "",
+      showOverlay: false,
+      showLoading: false
     };
   }
 
@@ -24,39 +31,88 @@ class Register extends React.Component {
   }
 
   HandleLastNameInput = (e) => {
-    console.log(e.target.value);
     this.setState({
       lastName: e.target.value
     });
   }
 
   HandleEmailInput = (e) => {
-    console.log(e.target.value)
     this.setState({
       email: e.target.value
     });
   }
 
   HandlePasswordInput = (e) => {
-    console.log(e.target.value);
     this.setState({
       password: e.target.value
     });
   }
 
   HandlePasswordAgainInput = (e) => {
-    console.log(e.target.value);
     this.setState({
       passwordAgain: e.target.value
     });
   }
 
+  CloseErrorModal = () => {
+    this.setState({
+      showErrorModal: false,
+      showOverlay: false,
+    });
+  }
+
   Submit = () => {
-    console.log(this.state.firstName + " -- " + this.state.lastName + "-- ", this.state.email + " -- " + this.state.password + " -- " + this.state.passwordAgain);
+    if (this.state.password !== this.state.passwordAgain) {
+      this.setState({
+        showErrorModal: true,
+        showOverlay: true,
+        errorModalBodyText: 'Passwords are not same.'
+      });
+    } else {
+      this.setState({
+        showOverlay: true,
+        showLoading: true
+      });
+
+      let body = {
+        "FirstName": this.state.firstName,
+        "LastName": this.state.lastName,
+        "Email": this.state.email,
+        "Password": this.state.password,
+      }
+
+      Apibase.Post({
+        url: links.register,
+        body,
+        successFunction: (data) => {
+          window.location.href = '/'
+        },
+        errorFunction: (data) => {
+          this.setState({
+            showOverlay: true,
+            showLoading: false,
+            errorModalBodyText: data.message,
+            showErrorModal: true
+          });
+        },
+        exceptionFunction: (err) => {
+          console.log("exceptionFunction data : ", err)
+          this.setState({
+            showOverlay: true,
+            showLoading: false,
+            errorModalBodyText: err.toString(),
+            showErrorModal: true
+          });
+        }
+      })
+
+    }
   }
 
   render() {
     return <>
+      <Loading showOverlay={this.state.showOverlay} showLoading={this.state.showLoading} />
+      <ErrorModal show={this.state.showErrorModal} body={this.state.errorModalBodyText} firstButtonOnPress={this.CloseErrorModal} />
       <div className="reset-password-section text-center">
         <h3><i className="fa fa-user-plus fa-4x"></i></h3>
       </div>
