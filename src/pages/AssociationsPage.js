@@ -13,7 +13,8 @@ class AssociationsPage extends React.Component {
       showErrorModal: false,
       errorModalBodyText: "",
       showOverlay: false,
-      showLoading: false
+      showLoading: false,
+      associations: []
     };
   }
 
@@ -29,7 +30,8 @@ class AssociationsPage extends React.Component {
         console.log("succcess : ", data);
         this.setState({
           showOverlay: false,
-          showLoading: false
+          showLoading: false,
+          associations: data.data
         });
       },
       errorFunction: (data) => {
@@ -59,71 +61,43 @@ class AssociationsPage extends React.Component {
     return <>
       <Loading showOverlay={this.state.showOverlay} showLoading={this.state.showLoading} />
       <ErrorModal show={this.state.showErrorModal} body={this.state.errorModalBodyText} firstButtonOnPress={this.CloseErrorModal} />
-      <div className="row">
-        <div className="col-xl-3 col-sm-6 mb-3">
-          <div className="card text-white bg-primary o-hidden h-100">
-            <div className="card-body">
-              <div className="card-body-icon">
-                <i className="fa fa-fw fa-comments"></i>
-              </div>
-              <div className="mr-5">26 New Messages!</div>
-            </div>
-            <a className="card-footer text-white clearfix small z-1" href="#">
-              <span className="float-left">View Details</span>
-              <span className="float-right">
-                <i className="fa fa-angle-right"></i>
-              </span>
-            </a>
+      <div className="table-container">
+        <div className="row">
+          <div className="col">
+            <h5 className="pb-2 mb-0">My Assocination Results</h5>
+          </div>
+          <div className="col text-right">
+            <button onClick={this.GetTransactionGroups} className="btn btn-default low-height-btn">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
           </div>
         </div>
-        <div className="col-xl-3 col-sm-6 mb-3">
-          <div className="card text-white bg-warning o-hidden h-100">
-            <div className="card-body">
-              <div className="card-body-icon">
-                <i className="fa fa-fw fa-list"></i>
-              </div>
-              <div className="mr-5">11 New Tasks!</div>
-            </div>
-            <a className="card-footer text-white clearfix small z-1" href="#">
-              <span className="float-left">View Details</span>
-              <span className="float-right">
-                <i className="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
+        <p style={{ width: '75vw' }}></p>
+        <div className="d-flex text-muted">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Alias</th>
+                <th>Result count</th>
+                <th>Created at</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.associations.map((item, index) =>
+                <tr key={index.toString()}>
+                  <td>{item.id}</td>
+                  <td>{item.alias}</td>
+                  <td>{item.resultCount}</td>
+                  <td>{item.createdAt.replace('T', ' - ')}</td>
+                  <td><i class="fa fa-arrow-right" aria-hidden="true"></i></td>
+                </tr>)}
+
+            </tbody>
+          </table>
         </div>
-        <div className="col-xl-3 col-sm-6 mb-3">
-          <div className="card text-white bg-success o-hidden h-100">
-            <div className="card-body">
-              <div className="card-body-icon">
-                <i className="fa fa-fw fa-shopping-cart"></i>
-              </div>
-              <div className="mr-5">123 New Orders!</div>
-            </div>
-            <a className="card-footer text-white clearfix small z-1" href="#">
-              <span className="float-left">View Details</span>
-              <span className="float-right">
-                <i className="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-        <div className="col-xl-3 col-sm-6 mb-3">
-          <div className="card text-white bg-danger o-hidden h-100">
-            <div className="card-body">
-              <div className="card-body-icon">
-                <i className="fa fa-fw fa-support"></i>
-              </div>
-              <div className="mr-5">13 New Tickets!</div>
-            </div>
-            <a className="card-footer text-white clearfix small z-1" href="#">
-              <span className="float-left">View Details</span>
-              <span className="float-right">
-                <i className="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
+
       </div>
     </>
   }
