@@ -24,6 +24,27 @@ class Apibase {
                 exceptionFunction(error)
             });
     }
+
+    Get = async ({ url, successFunction, errorFunction, exceptionFunction }) => {
+
+        fetch(baseUrlForEndpoint + url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    successFunction(data)
+                } else {
+                    errorFunction(data)
+                }
+            })
+            .catch((error) => {
+                exceptionFunction(error)
+            });
+    }
 }
 
 export default new Apibase

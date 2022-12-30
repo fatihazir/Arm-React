@@ -64,7 +64,6 @@ class LoginPage extends React.Component {
                 });
             },
             exceptionFunction: (err) => {
-                console.log("exceptionFunction data : ", err)
                 this.setState({
                     showOverlay: true,
                     showLoading: false,

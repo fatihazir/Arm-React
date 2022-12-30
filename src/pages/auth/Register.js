@@ -24,7 +24,6 @@ class Register extends React.Component {
   }
 
   HandleFirstNameInput = (e) => {
-    console.log(e.target.value)
     this.setState({
       firstName: e.target.value
     });

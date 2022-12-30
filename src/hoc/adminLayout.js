@@ -9,18 +9,18 @@ const adminLayout = (ChildComponent) => {
             super(props);
 
             this.state = {
-                pageLoaded: false,
+                pageLoaded: true,
                 saveLeadClickEvent: ""
             };
         }
 
-        componentDidMount() {
-            setTimeout(() => {
-                this.setState(() => ({
-                    pageLoaded: true
-                }))
-            }, 1000);
-        }
+        // componentDidMount() {
+        //     setTimeout(() => {
+        //         this.setState(() => ({
+        //             pageLoaded: true
+        //         }))
+        //     }, 1000);
+        // }
 
         renderHtml() {
             if (!this.state.pageLoaded) {
