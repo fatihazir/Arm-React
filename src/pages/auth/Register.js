@@ -113,7 +113,7 @@ class Register extends React.Component {
     return <>
       <Loading showOverlay={this.state.showOverlay} showLoading={this.state.showLoading} />
       <ErrorModal show={this.state.showErrorModal} body={this.state.errorModalBodyText} firstButtonOnPress={this.CloseErrorModal} />
-      <div className="reset-password-section text-center">
+      <div style={{ paddingTop: 50 }} className="reset-password-section text-center">
         <h3><i className="fa fa-user-plus fa-4x"></i></h3>
       </div>
       <form className="login-form">
