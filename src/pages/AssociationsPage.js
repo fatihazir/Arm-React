@@ -18,6 +18,10 @@ class AssociationsPage extends React.Component {
     };
   }
 
+  OnTransactionGroupClick = (transactionGroupId) => {
+    console.log(transactionGroupId);
+  }
+
   GetTransactionGroups = () => {
     this.setState({
       showOverlay: true,
@@ -27,7 +31,6 @@ class AssociationsPage extends React.Component {
     Apibase.Get({
       url: links.transactionGroups + "?userId=" + "2",
       successFunction: (data) => {
-        console.log("succcess : ", data);
         this.setState({
           showOverlay: false,
           showLoading: false,
@@ -52,8 +55,8 @@ class AssociationsPage extends React.Component {
       }
     })
   }
+
   componentDidMount() {
-    console.log("cdm")
     this.GetTransactionGroups()
   }
 
@@ -72,7 +75,7 @@ class AssociationsPage extends React.Component {
             </button>
           </div>
         </div>
-        <p style={{ width: '75vw' }}></p>
+        <p style={{ width: '80vw' }}></p>
         <div className="d-flex text-muted">
           <table className="table">
             <thead>
@@ -84,12 +87,12 @@ class AssociationsPage extends React.Component {
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {this.state.associations.map((item, index) =>
-                <tr key={index.toString()}>
+                <tr key={index.toString()} onClick={() => this.OnTransactionGroupClick(item.id)}>
                   <td>{item.id}</td>
                   <td>{item.alias}</td>
-                  <td>{item.resultCount}</td>
+                  <td >{item.resultCount}</td>
                   <td>{item.createdAt.replace('T', ' - ')}</td>
                   <td><i class="fa fa-arrow-right" aria-hidden="true"></i></td>
                 </tr>)}

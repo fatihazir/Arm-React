@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { baseUrlForEndpoint } from './Constants';
 
 class Apibase {
