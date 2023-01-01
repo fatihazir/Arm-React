@@ -12,8 +12,6 @@ function Sidebar() {
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
 
-    console.log(user);
-
     function SignOut() {
         dispatch(deleteUser())
         setTimeout(() => {
@@ -22,9 +20,9 @@ function Sidebar() {
     }
 
     return <div className="border-end sidenav" id="sidebar-wrapper">
-        <div className="sidebar-heading border-bottom ">
+        <div className="sidebar-heading border-bottom text-center">
             <Link to="/">
-                <img alt="Alt content" src={require('./../assets/images/logo.png')} />
+                <img style={{ width: '5vw' }} alt="Alt content" src={require('./../assets/images/logo.jpg')} />
             </Link>
         </div>
 
@@ -52,8 +50,8 @@ function Sidebar() {
 
         <div className="dropdown fixed-bottom-dropdown">
             <a href="#" className="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://via.placeholder.com/50" alt="" width="32" height="32" className="rounded-circle me-2" />
-                <span>{user.firstName} {user.lastName}</span>
+                <i className="fa fa-user-circle" aria-hidden="true"></i>
+                <span style={{ marginLeft: 12 }}>{user.firstName} {user.lastName}</span>
             </a>
             <ul className="dropdown-menu text-small shadow text-center" aria-labelledby="dropdownUser2">
                 <li> <li><button onClick={null} type="button" class="btn btn-primary btn-lg btn-block"><i className="fa fa-user-circle" aria-hidden="true"></i> Profile</button></li></li>

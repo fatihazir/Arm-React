@@ -11,9 +11,6 @@ export function Counter() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  console.log(user);
-
-
   return (
     <div style={{ backgroundColor: 'red', width: 500, height: 500 }}>
       <div className={styles.row}>

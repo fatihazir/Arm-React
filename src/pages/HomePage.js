@@ -15,8 +15,6 @@ function HomePage() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
-  console.log(user);
-
 
   const navigate = useNavigate();
 

@@ -22,7 +22,6 @@ function TransactionGroupDetail() {
         Apibase.Get({
             url: links.transactions + "?groupId=" + state.transactionGroupId.toString(),
             successFunction: (data) => {
-                console.log(data.data);
                 setTransactions(data.data)
                 setShowLoading(false)
                 setShowOverlay(false)
@@ -79,7 +78,7 @@ function TransactionGroupDetail() {
                                 <tr key={index.toString()}
                                 >
                                     <td>{item.id}</td>
-                                    <td>{item.associations}</td>
+                                    <td>{item.associations.split(',').map((item, index) => <p key={index}>{item}</p>)}</td>
                                     <td >{item.support}</td>
                                     <td>{item.lift}</td>
                                     <td>{item.confidence}</td>
