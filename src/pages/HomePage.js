@@ -5,8 +5,18 @@ import Apibase from "../assets/lib/Apibase"
 import ErrorModal from '../components/ErrorModal';
 import Loading from "../components/Loading";
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectUser
+} from '../features/user/userSlice';
 
 function HomePage() {
+
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  console.log(user);
+
 
   const navigate = useNavigate();
 
@@ -22,7 +32,7 @@ function HomePage() {
     setShowLoading(true)
 
     Apibase.Get({
-      url: links.transactionGroups + "?userId=" + "2",
+      url: links.transactionGroups + "?userId=" + user.id.toString(),
       successFunction: (data) => {
         setShowOverlay(false)
         setShowLoading(false)
