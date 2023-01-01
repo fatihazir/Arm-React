@@ -5,8 +5,19 @@ import Apibase from "../../assets/lib/Apibase"
 import { links } from "../../assets/lib/Constants";
 import ErrorModal from './../../components/ErrorModal';
 import Loading from "../../components/Loading";
+import {
+    selectUser,
+    setUser,
+    deleteUser
+} from '../../features/user/userSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 function LoginPage() {
+    const user = useSelector(selectUser);
+    const dispatch = useDispatch();
+
+    console.log(user);
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [showErrorModal, setShowErrorModal] = useState(false)
@@ -27,10 +38,10 @@ function LoginPage() {
             url: links.login,
             body,
             successFunction: (data) => {
-
+                dispatch(setUser(data.data))
                 setTimeout(() => {
                     window.location.href = '/'
-                }, 1000);
+                }, 1500);
             },
             errorFunction: (data) => {
                 setShowOverlay(true)

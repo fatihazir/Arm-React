@@ -9,7 +9,7 @@ import ChangePasswordPage from './pages/profile/ChangePasswordPage';
 import UserPreferencesPage from './pages/profile/UserPreferencesPage'
 import TransactionGroupDetail from './pages/TransactionGroupDetail';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Counter } from './features/counter/Counter';
+import { Counter } from './features/user/Counter';
 
 function App() {
     return (
