@@ -1,83 +1,78 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/css/login.css"
 import authLayout from "../../hoc/authLayout";
 import Apibase from "../../assets/lib/Apibase"
 import { links } from "../../assets/lib/Constants";
 import ErrorModal from './../../components/ErrorModal';
 import Loading from "../../components/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from '../../store/redux/userSlice'
 
-class LoginPage extends React.Component {
-    constructor(props) {
-        super(props);
+function LoginPage() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [showErrorModal, setShowErrorModal] = useState(false)
+    const [errorModalBodyText, setErrorModalBodyText] = useState("")
+    const [showOverlay, setShowOverlay] = useState(false)
+    const [showLoading, setShowLoading] = useState(false)
 
-        this.state = {
-            email: "",
-            password: "",
-            showErrorModal: false,
-            errorModalBodyText: "",
-            showOverlay: false,
-            showLoading: false
-        };
-    }
+    const user = useSelector((state) => state.user.value)
+    const dispatch = useDispatch()
 
-    HandleEmailInput = (e) => {
-        this.setState({
-            email: e.target.value
-        });
-    }
+    useEffect(() => {
+        console.log("user : ", user);
+    }, [user])
 
-    HandlePasswordInput = (e) => {
-        this.setState({
-            password: e.target.value
-        });
-    }
-
-    CloseErrorModal = () => {
-        this.setState({
-            showErrorModal: false,
-            showOverlay: false,
-        });
-    }
-
-    Login = () => {
-        this.setState({
-            showOverlay: true,
-            showLoading: true
-        });
+    const Login = () => {
+        setShowOverlay(true)
+        setShowLoading(true)
 
         let body = {
-            "Email": this.state.email,
-            "Password": this.state.password,
+            "Email": email,
+            "Password": password,
         }
+
         Apibase.Post({
             url: links.login,
             body,
             successFunction: (data) => {
-                window.location.href = '/'
+                dispatch(setUser(data.data))
+                setTimeout(() => {
+                    window.location.href = '/'
+                }, 1000);
             },
             errorFunction: (data) => {
-                this.setState({
-                    showOverlay: true,
-                    showLoading: false,
-                    errorModalBodyText: data.message,
-                    showErrorModal: true
-                });
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(data.message)
+                setShowErrorModal(true)
             },
             exceptionFunction: (err) => {
-                this.setState({
-                    showOverlay: true,
-                    showLoading: false,
-                    errorModalBodyText: err.toString(),
-                    showErrorModal: true
-                });
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(err.toString())
+                setShowErrorModal(true)
             }
         })
     }
 
-    render() {
-        return <>
-            <Loading showOverlay={this.state.showOverlay} showLoading={this.state.showLoading} />
-            <ErrorModal show={this.state.showErrorModal} body={this.state.errorModalBodyText} firstButtonOnPress={this.CloseErrorModal} />
+    const HandleEmailInput = (e) => {
+        setEmail(e.target.value)
+    }
+
+    const HandlePasswordInput = (e) => {
+        setPassword(e.target.value)
+    }
+
+    const CloseErrorModal = () => {
+        setShowErrorModal(false)
+        setShowOverlay(false)
+    }
+
+    return (
+        <>
+            <Loading showOverlay={showOverlay} showLoading={showLoading} />
+            <ErrorModal show={showErrorModal} body={errorModalBodyText} firstButtonOnPress={CloseErrorModal} />
             <div style={{ paddingTop: 50 }} className="reset-password-section text-center">
                 <h3><i className="fa fa-sign-in fa-4x"></i></h3>
             </div>
@@ -88,25 +83,25 @@ class LoginPage extends React.Component {
                 {/* <!-- Email input --> */}
                 <div className="form-outline mb-4">
                     <label className="form-label" htmlFor="form3Example3">Email address</label>
-                    <input onChange={this.HandleEmailInput} type="email" id="form3Example3" className="form-control form-control-lg"
+                    <input onChange={HandleEmailInput} type="email" id="form3Example3" className="form-control form-control-lg"
                         placeholder="Enter a valid email address" />
                 </div>
 
                 {/* <!-- Password input --> */}
                 <div className="form-outline mb-3">
                     <label className="form-label" htmlFor="form3Example4">Password</label>
-                    <input onChange={this.HandlePasswordInput} type="password" id="form3Example4" className="form-control form-control-lg"
+                    <input onChange={HandlePasswordInput} type="password" id="form3Example4" className="form-control form-control-lg"
                         placeholder="Enter password" />
                 </div>
 
                 <div className="text-center text-lg-start">
-                    <button onClick={this.Login} type="button" class="btn btn-primary btn-lg">Sign in</button>
+                    <button onClick={Login} type="button" class="btn btn-primary btn-lg">Sign in</button>
                     <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="/register"
                         className="link-danger">Sign Up</a></p>
                 </div>
             </form>
         </>
-    }
+    )
 }
 
 export default authLayout(LoginPage)
