@@ -5,8 +5,6 @@ import Apibase from "../../assets/lib/Apibase"
 import { links } from "../../assets/lib/Constants";
 import ErrorModal from './../../components/ErrorModal';
 import Loading from "../../components/Loading";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from '../../store/redux/userSlice'
 
 function LoginPage() {
     const [email, setEmail] = useState("")
@@ -15,13 +13,6 @@ function LoginPage() {
     const [errorModalBodyText, setErrorModalBodyText] = useState("")
     const [showOverlay, setShowOverlay] = useState(false)
     const [showLoading, setShowLoading] = useState(false)
-
-    const user = useSelector((state) => state.user.value)
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        console.log("user : ", user);
-    }, [user])
 
     const Login = () => {
         setShowOverlay(true)
@@ -36,7 +27,7 @@ function LoginPage() {
             url: links.login,
             body,
             successFunction: (data) => {
-                dispatch(setUser(data.data))
+
                 setTimeout(() => {
                     window.location.href = '/'
                 }, 1000);

@@ -5,7 +5,6 @@ import Apibase from "../assets/lib/Apibase"
 import ErrorModal from '../components/ErrorModal';
 import Loading from "../components/Loading";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
 
 function HomePage() {
 
@@ -17,8 +16,6 @@ function HomePage() {
   const [showLoading, setShowLoading] = useState(false)
   const [associations, setAssociations] = useState([])
 
-  const user = useSelector((state) => state.user.value)
-  console.log("user : ", user);
 
   const GetTransactionGroups = () => {
     setShowOverlay(true)

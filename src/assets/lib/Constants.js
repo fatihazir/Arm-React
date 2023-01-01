@@ -1,4 +1,4 @@
-export const baseUrlForEndpoint = 'https://localhost:5001/api'
+export const baseUrlForEndpoint = 'https://localhost:44387/api'
 
 export const links = {
     login: '/auth/login',
