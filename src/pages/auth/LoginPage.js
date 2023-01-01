@@ -6,17 +6,12 @@ import { links } from "../../assets/lib/Constants";
 import ErrorModal from './../../components/ErrorModal';
 import Loading from "../../components/Loading";
 import {
-    selectUser,
-    setUser,
-    deleteUser
+    setUser
 } from '../../features/user/userSlice';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 function LoginPage() {
-    const user = useSelector(selectUser);
     const dispatch = useDispatch();
-
-    console.log(user);
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
