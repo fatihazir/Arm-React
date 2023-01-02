@@ -7,6 +7,7 @@ export const links = {
     updateTransactionGroup: '/UserTransactionGroup/update',
     deleteTransactionGroup: '/UserTransactionGroup/delete',
     transactions: '/Transaction/getallbygroupId',
+    deleteTransaction: '/Transaction/deleteById',
 
 
 }

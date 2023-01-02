@@ -141,6 +141,35 @@ function TransactionGroupDetail() {
         })
     }
 
+    function DeleteTransaction(id) {
+        setShowOverlay(true)
+        setShowLoading(true)
+
+        let body = {
+            "Id": id,
+        }
+
+        Apibase.Post({
+            url: links.deleteTransaction,
+            body,
+            successFunction: (data) => {
+                GetTransactionsByGroupId();
+            },
+            errorFunction: (data) => {
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(data.message)
+                setShowErrorModal(true)
+            },
+            exceptionFunction: (err) => {
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(err.toString())
+                setShowErrorModal(true)
+            }
+        })
+    }
+
     function OnSuccessModalFirstButtonPressed() {
         if (isDeleteMode) {
             window.location.href = '/'
@@ -149,6 +178,7 @@ function TransactionGroupDetail() {
         setShowOverlay(false)
         state.group.alias = aliasInputText
     }
+
 
     useEffect(() => {
         GetTransactionsByGroupId()
@@ -210,17 +240,18 @@ function TransactionGroupDetail() {
                                 <th>Support</th>
                                 <th>Lift</th>
                                 <th>Confidence</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody >
                             {transactions.map((item, index) =>
-                                <tr key={index.toString()}
-                                >
+                                <tr key={index.toString()}>
                                     <td>{item.id}</td>
                                     <td>{item.associations.split(',').map((item, index) => <p key={index}>{item}</p>)}</td>
                                     <td >{item.support}</td>
                                     <td>{item.lift}</td>
                                     <td>{item.confidence}</td>
+                                    <td><button type="button" class="btn btn-outline-danger" onClick={() => DeleteTransaction(item.id)}>Delete</button></td>
                                 </tr>)}
 
                         </tbody>
