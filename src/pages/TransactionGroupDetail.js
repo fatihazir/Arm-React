@@ -53,8 +53,13 @@ function TransactionGroupDetail() {
         setShowErrorModal(false)
     }
 
+    function CloseWarningModal() {
+        setShowOverlay(false)
+        setShowWarningModal(false)
+    }
+
     function OnEditIconPressed() {
-        setShowEditAliasInput(true)
+        setShowEditAliasInput(!showEditAliasInput)
     }
 
     function OnDeleteIconPressed() {
@@ -163,7 +168,7 @@ function TransactionGroupDetail() {
                 show={showWarningModal}
                 title="Warning"
                 body={errorModalBodyText}
-                firstButtonOnPress={CloseErrorModal}
+                firstButtonOnPress={CloseWarningModal}
                 firstButtonText={"Close"}
                 secondButtonText={"Delete"}
                 secondButtonOnPress={DeleteGroup}
