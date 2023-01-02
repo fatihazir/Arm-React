@@ -5,6 +5,7 @@ import Apibase from "../../assets/lib/Apibase"
 import { links } from "../../assets/lib/Constants";
 import ErrorModal from './../../components/ErrorModal';
 import Loading from "../../components/Loading";
+import SuccessModal from "../../components/SuccessModal";
 
 class Register extends React.Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class Register extends React.Component {
       showErrorModal: false,
       errorModalBodyText: "",
       showOverlay: false,
-      showLoading: false
+      showLoading: false,
+      showSuccessModal: false
     };
   }
 
@@ -84,7 +86,12 @@ class Register extends React.Component {
         url: links.register,
         body,
         successFunction: (data) => {
-          window.location.href = '/'
+          this.setState({
+            showSuccessModal: true,
+          });
+          setTimeout(() => {
+            window.location.href = '/login'
+          }, 500);
         },
         errorFunction: (data) => {
           this.setState({
@@ -104,7 +111,6 @@ class Register extends React.Component {
           });
         }
       })
-
     }
   }
 
@@ -112,6 +118,7 @@ class Register extends React.Component {
     return <>
       <Loading showOverlay={this.state.showOverlay} showLoading={this.state.showLoading} />
       <ErrorModal show={this.state.showErrorModal} body={this.state.errorModalBodyText} firstButtonOnPress={this.CloseErrorModal} />
+      <SuccessModal show={this.state.showSuccessModal} body={"Register Success! Redirecting..."} />
       <div style={{ paddingTop: 50 }} className="reset-password-section text-center">
         <h3><i className="fa fa-user-plus fa-4x"></i></h3>
       </div>
