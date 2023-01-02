@@ -5,6 +5,7 @@ export const links = {
     register: '/auth/register',
     transactionGroups: '/UserTransactionGroup/getAllByUserId',
     updateTransactionGroup: '/UserTransactionGroup/update',
+    deleteTransactionGroup: '/UserTransactionGroup/delete',
     transactions: '/Transaction/getallbygroupId',
 
 

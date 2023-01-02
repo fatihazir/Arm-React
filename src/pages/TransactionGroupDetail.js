@@ -19,6 +19,8 @@ function TransactionGroupDetail() {
     const [aliasInputText, setAliasInputText] = useState(state.group.alias)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [successModalText, setSuccessModalText] = useState("")
+    const [showWarningModal, setShowWarningModal] = useState(false)
+    const [isDeleteMode, setIsDeleteMode] = useState(false)
 
     const GetTransactionsByGroupId = () => {
         setShowOverlay(true)
@@ -56,7 +58,9 @@ function TransactionGroupDetail() {
     }
 
     function OnDeleteIconPressed() {
-
+        setShowOverlay(true)
+        setErrorModalBodyText("Are you sure to delete " + aliasInputText + " transaction group?")
+        setShowWarningModal(true)
     }
 
     function HandleAliasInputText(e) {
@@ -97,7 +101,45 @@ function TransactionGroupDetail() {
         })
     }
 
+    function DeleteGroup() {
+        setShowWarningModal(false)
+        setShowLoading(true)
+
+        let body = {
+            "Id": state.group.id,
+            "UserId": state.group.userId,
+            "Alias": aliasInputText,
+            "CreatedAt": state.group.createdAt
+        }
+
+        Apibase.Post({
+            url: links.deleteTransactionGroup,
+            body,
+            successFunction: (data) => {
+                setIsDeleteMode(true)
+                setSuccessModalText(data.message)
+                setShowLoading(false)
+                setShowSuccessModal(true)
+            },
+            errorFunction: (data) => {
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(data.message)
+                setShowErrorModal(true)
+            },
+            exceptionFunction: (err) => {
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(err.toString())
+                setShowErrorModal(true)
+            }
+        })
+    }
+
     function OnSuccessModalFirstButtonPressed() {
+        if (isDeleteMode) {
+            window.location.href = '/'
+        }
         setShowSuccessModal(false)
         setShowOverlay(false)
         state.group.alias = aliasInputText
@@ -111,7 +153,21 @@ function TransactionGroupDetail() {
     return (
         <>
             <Loading showOverlay={showOverlay} showLoading={showLoading} />
-            <ErrorModal show={showErrorModal} body={errorModalBodyText} firstButtonOnPress={CloseErrorModal} />
+            <ErrorModal
+                show={showErrorModal}
+                body={errorModalBodyText}
+                firstButtonOnPress={CloseErrorModal}
+                firstButtonText={"Close"}
+            />
+            <ErrorModal
+                show={showWarningModal}
+                title="Warning"
+                body={errorModalBodyText}
+                firstButtonOnPress={CloseErrorModal}
+                firstButtonText={"Close"}
+                secondButtonText={"Delete"}
+                secondButtonOnPress={DeleteGroup}
+            />
             <SuccessModal show={showSuccessModal} body={successModalText} firstButtonOnPress={OnSuccessModalFirstButtonPressed} />
             <div className="table-container">
                 <div className="row">
