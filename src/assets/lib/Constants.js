@@ -4,6 +4,8 @@ export const links = {
     login: '/auth/login',
     register: '/auth/register',
     transactionGroups: '/UserTransactionGroup/getAllByUserId',
-    transactions: '/Transaction/getallbygroupId'
+    updateTransactionGroup: '/UserTransactionGroup/update',
+    transactions: '/Transaction/getallbygroupId',
+
 
 }

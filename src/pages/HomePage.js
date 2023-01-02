@@ -51,8 +51,8 @@ function HomePage() {
     })
   }
 
-  const OnTransactionGroupClick = (transactionGroupId) => {
-    navigate('/transaction-group-detail', { state: { transactionGroupId } })
+  const OnTransactionGroupClick = (transactionGroupId, group) => {
+    navigate('/transaction-group-detail', { state: { transactionGroupId, group } })
   }
 
   function CloseErrorModal() {
@@ -94,7 +94,7 @@ function HomePage() {
             <tbody >
               {associations.map((item, index) =>
                 <tr key={index.toString()}
-                  onClick={() => OnTransactionGroupClick(item.id)}
+                  onClick={() => OnTransactionGroupClick(item.id, item)}
                 >
                   <td>{item.id}</td>
                   <td>{item.alias}</td>

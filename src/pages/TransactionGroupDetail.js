@@ -5,6 +5,7 @@ import adminLayout from "../hoc/adminLayout"
 import Apibase from "../assets/lib/Apibase"
 import ErrorModal from '../components/ErrorModal';
 import Loading from "../components/Loading";
+import SuccessModal from "../components/SuccessModal";
 
 function TransactionGroupDetail() {
     const { state } = useLocation()
@@ -14,6 +15,10 @@ function TransactionGroupDetail() {
     const [showOverlay, setShowOverlay] = useState(false)
     const [showLoading, setShowLoading] = useState(false)
     const [transactions, setTransactions] = useState([])
+    const [showEditAliasInput, setShowEditAliasInput] = useState(false)
+    const [aliasInputText, setAliasInputText] = useState(state.group.alias)
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [successModalText, setSuccessModalText] = useState("")
 
     const GetTransactionsByGroupId = () => {
         setShowOverlay(true)
@@ -46,6 +51,58 @@ function TransactionGroupDetail() {
         setShowErrorModal(false)
     }
 
+    function OnEditIconPressed() {
+        setShowEditAliasInput(true)
+    }
+
+    function OnDeleteIconPressed() {
+
+    }
+
+    function HandleAliasInputText(e) {
+        setAliasInputText(e.target.value)
+    }
+
+    function OnInputSaveButtonPressed() {
+        setShowOverlay(true)
+        setShowLoading(true)
+
+        let body = {
+            "Id": state.group.id,
+            "UserId": state.group.userId,
+            "Alias": aliasInputText,
+            "CreatedAt": state.group.createdAt
+        }
+
+        Apibase.Post({
+            url: links.updateTransactionGroup,
+            body,
+            successFunction: (data) => {
+                setSuccessModalText(data.message)
+                setShowLoading(false)
+                setShowSuccessModal(true)
+            },
+            errorFunction: (data) => {
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(data.message)
+                setShowErrorModal(true)
+            },
+            exceptionFunction: (err) => {
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(err.toString())
+                setShowErrorModal(true)
+            }
+        })
+    }
+
+    function OnSuccessModalFirstButtonPressed() {
+        setShowSuccessModal(false)
+        setShowOverlay(false)
+        state.group.alias = aliasInputText
+    }
+
     useEffect(() => {
         GetTransactionsByGroupId()
     }, [])
@@ -55,12 +112,33 @@ function TransactionGroupDetail() {
         <>
             <Loading showOverlay={showOverlay} showLoading={showLoading} />
             <ErrorModal show={showErrorModal} body={errorModalBodyText} firstButtonOnPress={CloseErrorModal} />
+            <SuccessModal show={showSuccessModal} body={successModalText} firstButtonOnPress={OnSuccessModalFirstButtonPressed} />
             <div className="table-container">
                 <div className="row">
                     <div className="col">
-                        <h5 className="pb-2 mb-0">My Results</h5>
+                        <h5 className="pb-2 mb-0">My Results for {state.group.alias}</h5>
+                    </div>
+                    <div className="col text-right">
+                        <button onClick={OnEditIconPressed} className="btn btn-default low-height-btn">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
+                        <button onClick={OnDeleteIconPressed} style={{ marginLeft: 12 }} className="btn btn-default low-height-btn">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
                     </div>
                 </div>
+                {showEditAliasInput &&
+                    <div className="row">
+                        <div className="col">
+                        </div>
+                        <div className="col">
+                            <div className="form-outline mb-4 mt-4">
+                                <input onChange={HandleAliasInputText} type="email" id="form3Example3" className="form-control form-control-lg"
+                                    value={aliasInputText} />
+                            </div>
+                            <button onClick={OnInputSaveButtonPressed} type="button" class="btn btn-primary btn-md">Save</button>
+                        </div>
+                    </div>}
                 <p style={{ width: '80vw' }}></p>
                 <div className="d-flex text-muted">
                     <table className="table">
