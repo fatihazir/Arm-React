@@ -2,12 +2,12 @@ import { baseUrlForEndpoint } from './Constants';
 
 class Apibase {
 
-    Post = async ({ url, body, successFunction, errorFunction, exceptionFunction }) => {
-
+    Post = async ({ url, body, bearerToken, successFunction, errorFunction, exceptionFunction }) => {
         fetch(baseUrlForEndpoint + url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + bearerToken
             },
             body: JSON.stringify(body),
         })
@@ -24,12 +24,13 @@ class Apibase {
             });
     }
 
-    Get = async ({ url, successFunction, errorFunction, exceptionFunction }) => {
+    Get = async ({ url, bearerToken, successFunction, errorFunction, exceptionFunction }) => {
 
         fetch(baseUrlForEndpoint + url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + bearerToken
             },
         })
             .then((response) => response.json())

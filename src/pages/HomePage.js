@@ -31,6 +31,7 @@ function HomePage() {
 
     Apibase.Get({
       url: links.transactionGroups + "?userId=" + user.id.toString(),
+      bearerToken: user.token,
       successFunction: (data) => {
         setShowOverlay(false)
         setShowLoading(false)

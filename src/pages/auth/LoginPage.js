@@ -6,12 +6,15 @@ import { links } from "../../assets/lib/Constants";
 import ErrorModal from './../../components/ErrorModal';
 import Loading from "../../components/Loading";
 import {
-    setUser
+    setUser,
+    selectUser
 } from '../../features/user/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function LoginPage() {
     const dispatch = useDispatch();
+    const user = useSelector(selectUser);
+    console.log(user);
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -32,6 +35,7 @@ function LoginPage() {
         Apibase.Post({
             url: links.login,
             body,
+            bearerToken: '',
             successFunction: (data) => {
                 dispatch(setUser(data.data))
                 setTimeout(() => {

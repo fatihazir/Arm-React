@@ -6,9 +6,14 @@ import Apibase from "../assets/lib/Apibase"
 import ErrorModal from '../components/ErrorModal';
 import Loading from "../components/Loading";
 import SuccessModal from "../components/SuccessModal";
+import { useSelector } from 'react-redux';
+import {
+    selectUser
+} from '../features/user/userSlice';
 
 function TransactionGroupDetail() {
     const { state } = useLocation()
+    const user = useSelector(selectUser);
 
     const [showErrorModal, setShowErrorModal] = useState(false)
     const [errorModalBodyText, setErrorModalBodyText] = useState("")
@@ -28,6 +33,7 @@ function TransactionGroupDetail() {
 
         Apibase.Get({
             url: links.transactions + "?groupId=" + state.transactionGroupId.toString(),
+            bearerToken: user.token,
             successFunction: (data) => {
                 setTransactions(data.data)
                 setShowLoading(false)
@@ -86,6 +92,7 @@ function TransactionGroupDetail() {
         Apibase.Post({
             url: links.updateTransactionGroup,
             body,
+            bearerToken: user.token,
             successFunction: (data) => {
                 setSuccessModalText(data.message)
                 setShowLoading(false)
@@ -120,6 +127,7 @@ function TransactionGroupDetail() {
         Apibase.Post({
             url: links.deleteTransactionGroup,
             body,
+            bearerToken: user.token,
             successFunction: (data) => {
                 setIsDeleteMode(true)
                 setSuccessModalText(data.message)
@@ -152,6 +160,7 @@ function TransactionGroupDetail() {
         Apibase.Post({
             url: links.deleteTransaction,
             body,
+            bearerToken: user.token,
             successFunction: (data) => {
                 GetTransactionsByGroupId();
             },
