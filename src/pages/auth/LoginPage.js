@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 function LoginPage() {
     const dispatch = useDispatch();
     const user = useSelector(selectUser);
-    console.log(user);
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")

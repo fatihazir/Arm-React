@@ -33,7 +33,7 @@ function Sidebar() {
                         <i className="fa fa-dashboard"></i> Associations
                     </Link>
                 </li>
-                <li className="mb-1">
+                {/* <li className="mb-1">
                     <Link tag="a" className="" to="/blank-page">
                         <i className="fa fa-file-o"></i> Blank Page
                     </Link>
@@ -43,7 +43,7 @@ function Sidebar() {
                     <Link tag="a" className="" to="/typography">
                         <i className="fa fa-text-width" aria-hidden="true"></i> Typography
                     </Link>
-                </li>
+                </li> */}
 
             </ul>
         </PerfectScrollbar>
