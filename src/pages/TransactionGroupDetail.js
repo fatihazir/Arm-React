@@ -150,13 +150,18 @@ function TransactionGroupDetail() {
     }
 
     function DeleteTransaction(id) {
+        console.log(id);
         setShowOverlay(true)
         setShowLoading(true)
 
         let body = {
-            "Id": id,
+            "id": id,
+            "transactionGroupId": 0,
+            "associations": "string",
+            "support": 0,
+            "confidence": 0,
+            "lift": 0
         }
-
         Apibase.Post({
             url: links.deleteTransaction,
             body,
