@@ -91,7 +91,7 @@ class Register extends React.Component {
           });
           setTimeout(() => {
             window.location.href = '/login'
-          }, 500);
+          }, 1500);
         },
         errorFunction: (data) => {
           this.setState({
