@@ -62,8 +62,11 @@ function HomePage() {
   }
 
   useEffect(() => {
-    GetTransactionGroups()
+    if (user.id) {
+      GetTransactionGroups()
+    }
   }, [])
+
 
   return (
     <>

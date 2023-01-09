@@ -13,10 +13,8 @@ function Sidebar() {
     const dispatch = useDispatch();
 
     function SignOut() {
+        window.location.href = '/login'
         dispatch(deleteUser())
-        setTimeout(() => {
-            window.location.href = '/login'
-        }, 250);
     }
 
     return <div className="border-end sidenav" id="sidebar-wrapper">

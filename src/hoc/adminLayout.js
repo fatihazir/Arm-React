@@ -1,38 +1,34 @@
 import React from "react";
 import Sidebar from './../common/sidebar';
+import { useSelector } from 'react-redux';
+import {
+    selectUser
+} from '../features/user/userSlice';
+import NotLoggedIn from "../components/NotLoggedIn";
 
 const adminLayout = (ChildComponent) => {
-    class AdminLayout extends React.Component {
-        constructor(props) {
-            super(props);
+    function AdminLayout() {
+        const user = useSelector(selectUser);
 
-            this.state = {
-                pageLoaded: true,
-                saveLeadClickEvent: ""
-            };
+        function RenderMainContent() {
+            if (user.id) {
+                return <ChildComponent />
+            } else {
+                return <NotLoggedIn />
+            }
         }
 
-        renderHtml() {
-            return <div className="d-flex" id="wrapper">
-                {/* <!-- Sidebar--> */}
-                <Sidebar />
-                {/* <!-- Page content wrapper--> */}
-                <div className="main" id="page-content-wrapper">
-                    {/* <!-- Top navigation--> */}
-                    {/* <Header /> */}
-                    {/* <!-- Page content--> */}
-                    <div className="container-fluid content-container">
-                        <ChildComponent {...this.props} />
-                    </div>
+        return (<div className="d-flex" id="wrapper">
+            {/* <!-- Sidebar--> */}
+            <Sidebar />
+            {/* <!-- Page content wrapper--> */}
+            <div className="main" id="page-content-wrapper">
+                {/* <!-- Page content--> */}
+                <div className="container-fluid content-container">
+                    {RenderMainContent()}
                 </div>
             </div>
-        }
-
-        render() {
-            return <>
-                {this.renderHtml()}
-            </>
-        }
+        </div>)
     }
 
     return AdminLayout;
