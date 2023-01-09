@@ -9,6 +9,7 @@ import ChangePasswordPage from './pages/profile/ChangePasswordPage';
 import UserPreferencesPage from './pages/profile/UserPreferencesPage'
 import TransactionGroupDetail from './pages/TransactionGroupDetail';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import NotFound from './components/NotFound';
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                 <Route exact path='/preferences' element={<UserPreferencesPage />} />
                 <Route exact path='/typography' element={<TypographyPage />} />
                 <Route exact path='/transaction-group-detail' element={<TransactionGroupDetail />} />
+                <Route path='*' element={<NotFound />} />
             </Routes>
         </Router>
     )
