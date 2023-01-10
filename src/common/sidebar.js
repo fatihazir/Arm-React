@@ -37,7 +37,11 @@ function Sidebar() {
 
             <div className="dropdown fixed-bottom-dropdown">
                 <a href="#" className="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i className="fa fa-user-circle" aria-hidden="true"></i>
+                    {user.photoUrl ?
+                        <img style={{ height: '2vw', width: '2vw', borderRadius: '1vw' }} src={user.photoUrl}></img>
+                        :
+                        <i className="fa fa-user-circle" aria-hidden="true"></i>
+                    }
                     <span style={{ marginLeft: 12 }}>{user.firstName} {user.lastName}</span>
                 </a>
                 <ul className="dropdown-menu text-small shadow text-center" aria-labelledby="dropdownUser2">
