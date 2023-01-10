@@ -45,9 +45,10 @@ function Sidebar() {
                     <span style={{ marginLeft: 12 }}>{user.firstName} {user.lastName}</span>
                 </a>
                 <ul className="dropdown-menu text-small shadow text-center" aria-labelledby="dropdownUser2">
-                    <li> <li><button onClick={null} type="button" class="btn btn-primary btn-lg btn-block"><i className="fa fa-user-circle" aria-hidden="true"></i> Profile</button></li></li>
+                    <li> <li><button onClick={null} type="button" class="btn btn-primary btn-lg btn-block">
+                        <i className="fa fa-user-circle" aria-hidden="true"></i> Profile</button></li></li>
                     <li><hr className="dropdown-divider" /></li>
-                    <li><button onClick={SignOut} type="button" class="btn btn-primary btn-lg btn-block"><i className="fa fa-sign-out" aria-hidden="true">Sign out</i></button></li>
+                    <li><button onClick={SignOut} type="button" class="btn btn-primary btn-lg btn-block"><i className="fa fa-sign-out" aria-hidden="true"> Sign out</i></button></li>
                 </ul>
             </div>
         </>}
