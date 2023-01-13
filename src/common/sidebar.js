@@ -13,7 +13,6 @@ function Sidebar() {
     const dispatch = useDispatch();
 
     function SignOut() {
-        window.location.href = '/login'
         dispatch(deleteUser())
     }
 
