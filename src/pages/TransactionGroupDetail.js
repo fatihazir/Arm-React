@@ -129,12 +129,14 @@ function TransactionGroupDetail() {
             body,
             bearerToken: user.token,
             successFunction: (data) => {
+                console.log('success');
                 setIsDeleteMode(true)
                 setSuccessModalText(data.message)
                 setShowLoading(false)
                 setShowSuccessModal(true)
             },
             errorFunction: (data) => {
+                console.log('error');
                 setShowOverlay(true)
                 setShowLoading(false)
                 setErrorModalBodyText(data.message)

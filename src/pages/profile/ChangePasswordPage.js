@@ -1,13 +1,85 @@
 import React, { useState } from "react";
 import "../../assets/css/profile.css"
 import userProfileLayout from "../../hoc/userProfileLayout";
+import Apibase from "../../assets/lib/Apibase"
+import { links } from "../../assets/lib/Constants";
+import ErrorModal from './../../components/ErrorModal';
+import SuccessModal from "./../../components/SuccessModal";
+import Loading from "../../components/Loading";
+import { useSelector } from 'react-redux';
+import {
+    selectUser
+} from '../../features/user/userSlice';
 
 function ProfilePage() {
+    const user = useSelector(selectUser);
+
     const [currentPassword, setCurrentPassword] = useState()
     const [newPassword, setNewPassword] = useState()
     const [newPasswordAgain, setNewPasswordAgain] = useState()
+    const [showErrorModal, setShowErrorModal] = useState(false)
+    const [errorModalBodyText, setErrorModalBodyText] = useState("")
+    const [showOverlay, setShowOverlay] = useState(false)
+    const [showLoading, setShowLoading] = useState(false)
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [successModalText, setSuccessModalText] = useState("")
+
+    const ChangePassword = () => {
+        if (newPassword !== newPasswordAgain) {
+            setErrorModalBodyText("New passwords do not match.")
+            setShowOverlay(true)
+            setShowErrorModal(true)
+            return
+        }
+
+        setShowOverlay(true)
+        setShowLoading(true)
+
+        let body = {
+            "Email": user.email,
+            "OldPassword": currentPassword,
+            "NewPassword": newPassword
+        }
+
+        Apibase.Post({
+            url: links.changePassword,
+            body,
+            bearerToken: user.token,
+            successFunction: (data) => {
+                setSuccessModalText(data.message)
+                setShowLoading(false)
+                setShowSuccessModal(true)
+            },
+            errorFunction: (data) => {
+                console.log("err : ", data);
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(data.message)
+                setShowErrorModal(true)
+            },
+            exceptionFunction: (err) => {
+                setShowOverlay(true)
+                setShowLoading(false)
+                setErrorModalBodyText(err.toString())
+                setShowErrorModal(true)
+            }
+        })
+    }
+
+    const CloseErrorModal = () => {
+        setShowErrorModal(false)
+        setShowOverlay(false)
+    }
+
+    function OnSuccessModalFirstButtonPressed() {
+        setShowSuccessModal(false)
+        setShowOverlay(false)
+    }
 
     return <>
+        <Loading showOverlay={showOverlay} showLoading={showLoading} />
+        <ErrorModal show={showErrorModal} body={errorModalBodyText} firstButtonOnPress={CloseErrorModal} />
+        <SuccessModal show={showSuccessModal} body={successModalText} firstButtonOnPress={OnSuccessModalFirstButtonPressed} />
         <div className="my-3 p-3 bg-body rounded shadow-sm">
             <h6 className="border-bottom pb-2 mb-0 mb-3">Change Password</h6>
 
@@ -40,8 +112,9 @@ function ProfilePage() {
                             </div>
                         </div>
                         <hr />
-                        <button type="submit" className="btn btn-primary">Change password</button>
                     </form>
+
+                    <button onClick={() => ChangePassword()} className="btn btn-primary">Change password</button>
                 </div>
             </div>
         </div>
