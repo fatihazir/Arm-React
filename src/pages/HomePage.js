@@ -73,6 +73,9 @@ function HomePage() {
       <Loading showOverlay={showOverlay} showLoading={showLoading} />
       <ErrorModal show={showErrorModal} body={errorModalBodyText} firstButtonOnPress={CloseErrorModal} />
       <div className="table-container">
+        <div className="col" style={{ textAlign: 'center' }}>
+          <p>This system uses caching for 10 minutes of duration. It might take up to 10 minutes to see the changes in case of deleting and updating.</p>
+        </div>
         <div className="row">
           <div className="col">
             <h5 className="pb-2 mb-0">My Assocination Results</h5>
