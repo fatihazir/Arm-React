@@ -130,7 +130,7 @@ class Register extends React.Component {
         <div className="form-outline mb-4">
           <label className="form-label" htmlFor="form3Example3">First Name</label>
           <input onChange={this.HandleFirstNameInput} type="text" id="form3Example3" className="form-control form-control-lg"
-            placeholder="Enter your first name" />
+            placeholder="Enter your first name" autoFocus />
         </div>
 
         {/* <!-- Last name input --> */}

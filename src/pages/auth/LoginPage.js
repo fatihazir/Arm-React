@@ -84,7 +84,7 @@ function LoginPage() {
                 <div className="form-outline mb-4">
                     <label className="form-label" htmlFor="form3Example3">Email address</label>
                     <input onChange={HandleEmailInput} type="email" id="form3Example3" className="form-control form-control-lg"
-                        placeholder="Enter a valid email address" />
+                        placeholder="Enter a valid email address" autoFocus />
                 </div>
 
                 {/* <!-- Password input --> */}

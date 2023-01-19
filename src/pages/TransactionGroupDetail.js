@@ -11,6 +11,8 @@ import {
     selectUser
 } from '../features/user/userSlice';
 
+let resultCount = 0
+
 function TransactionGroupDetail() {
     const { state } = useLocation()
     const user = useSelector(selectUser);
@@ -21,7 +23,9 @@ function TransactionGroupDetail() {
     const [showLoading, setShowLoading] = useState(false)
     const [transactions, setTransactions] = useState([])
     const [showEditAliasInput, setShowEditAliasInput] = useState(false)
+    const [showFilterInput, setShowFilterInput] = useState(false)
     const [aliasInputText, setAliasInputText] = useState(state.group.alias)
+    const [filterText, setFilterText] = useState()
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [successModalText, setSuccessModalText] = useState("")
     const [showWarningModal, setShowWarningModal] = useState(false)
@@ -36,6 +40,8 @@ function TransactionGroupDetail() {
             bearerToken: user.token,
             successFunction: (data) => {
                 setTransactions(data.data)
+                console.log(data.data);
+                resultCount = data.data.length
                 setShowLoading(false)
                 setShowOverlay(false)
             },
@@ -64,6 +70,10 @@ function TransactionGroupDetail() {
         setShowWarningModal(false)
     }
 
+    function OnFilterIconPressed() {
+        setShowFilterInput(!showFilterInput)
+    }
+
     function OnEditIconPressed() {
         setShowEditAliasInput(!showEditAliasInput)
     }
@@ -76,6 +86,10 @@ function TransactionGroupDetail() {
 
     function HandleAliasInputText(e) {
         setAliasInputText(e.target.value)
+    }
+
+    function HandleFilterInputText(e) {
+        setFilterText(e.target.value)
     }
 
     function OnInputSaveButtonPressed() {
@@ -195,11 +209,20 @@ function TransactionGroupDetail() {
         state.group.alias = aliasInputText
     }
 
+    function HandleFilteredData() {
+        if (filterText && filterText.length > 1) {
+            let filteredData = transactions.filter(item => item.associations.toLowerCase().includes(filterText.toLowerCase()))
+            resultCount = filteredData.length
+            return filteredData
+        }
+        resultCount = transactions.length
+        return transactions
+    }
+
 
     useEffect(() => {
         GetTransactionsByGroupId()
     }, [])
-
 
     return (
         <>
@@ -226,7 +249,10 @@ function TransactionGroupDetail() {
                         <h5 className="pb-2 mb-0">My Results for {state.group.alias}</h5>
                     </div>
                     <div className="col text-right">
-                        <button onClick={OnEditIconPressed} className="btn btn-default low-height-btn">
+                        <button onClick={OnFilterIconPressed} className="btn btn-default low-height-btn">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                        </button>
+                        <button onClick={OnEditIconPressed} style={{ marginLeft: 12 }} className="btn btn-default low-height-btn">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
                         <button onClick={OnDeleteIconPressed} style={{ marginLeft: 12 }} className="btn btn-default low-height-btn">
@@ -234,16 +260,42 @@ function TransactionGroupDetail() {
                         </button>
                     </div>
                 </div>
+
+                <ul class="nav">
+                    <li class="nav-item">
+                        <button onClick={null} type="button" class="btn btn-primary btn-sm">All</button>
+                    </li>
+                    <li class="nav-item">
+                        <button onClick={null} type="button" class="btn btn-primary btn-sm">Positive Associations</button>
+                    </li>
+                    <li class="nav-item">
+                        <button onClick={null} type="button" class="btn btn-primary btn-sm">Negative Associations</button>
+                    </li>
+                </ul>
                 {showEditAliasInput &&
                     <div className="row">
                         <div className="col">
                         </div>
                         <div className="col">
                             <div className="form-outline mb-4 mt-4">
-                                <input onChange={HandleAliasInputText} type="email" id="form3Example3" className="form-control form-control-lg"
-                                    value={aliasInputText} />
+                                <label className="form-label" htmlFor="form3Example3">Group Name</label>
+                                <input onChange={HandleAliasInputText} type="text" id="form3Example3" className="form-control form-control-lg"
+                                    value={aliasInputText} autoFocus />
                             </div>
                             <button onClick={OnInputSaveButtonPressed} type="button" class="btn btn-primary btn-md">Save</button>
+                        </div>
+                    </div>}
+                {showFilterInput &&
+                    <div className="row">
+                        <div className="col">
+                        </div>
+                        <div className="col">
+                            <div className="form-outline mb-4 mt-4">
+                                <label className="form-label" htmlFor="form3Example3">Filter text</label>
+                                <input onChange={HandleFilterInputText} type="text" id="form3Example3" className="form-control form-control-lg"
+                                    value={filterText} autoFocus />
+                            </div>
+                            <p>Result count: {resultCount}</p>
                         </div>
                     </div>}
                 <p style={{ width: '80vw' }}></p>
@@ -260,7 +312,7 @@ function TransactionGroupDetail() {
                             </tr>
                         </thead>
                         <tbody >
-                            {transactions.map((item, index) =>
+                            {HandleFilteredData().map((item, index) =>
                                 <tr key={index.toString()}>
                                     <td>{item.id}</td>
                                     <td>{item.associations.split(',').map((item, index) => <p key={index}>{item}</p>)}</td>
