@@ -30,6 +30,7 @@ function TransactionGroupDetail() {
     const [successModalText, setSuccessModalText] = useState("")
     const [showWarningModal, setShowWarningModal] = useState(false)
     const [isDeleteMode, setIsDeleteMode] = useState(false)
+    const [associationOrderType, setAssociationOrderType] = useState(null)
 
     const GetTransactionsByGroupId = () => {
         setShowOverlay(true)
@@ -40,7 +41,6 @@ function TransactionGroupDetail() {
             bearerToken: user.token,
             successFunction: (data) => {
                 setTransactions(data.data)
-                console.log(data.data);
                 resultCount = data.data.length
                 setShowLoading(false)
                 setShowOverlay(false)
@@ -143,14 +143,12 @@ function TransactionGroupDetail() {
             body,
             bearerToken: user.token,
             successFunction: (data) => {
-                console.log('success');
                 setIsDeleteMode(true)
                 setSuccessModalText(data.message)
                 setShowLoading(false)
                 setShowSuccessModal(true)
             },
             errorFunction: (data) => {
-                console.log('error');
                 setShowOverlay(true)
                 setShowLoading(false)
                 setErrorModalBodyText(data.message)
@@ -166,7 +164,6 @@ function TransactionGroupDetail() {
     }
 
     function DeleteTransaction(id) {
-        console.log(id);
         setShowOverlay(true)
         setShowLoading(true)
 
@@ -209,16 +206,34 @@ function TransactionGroupDetail() {
         state.group.alias = aliasInputText
     }
 
-    function HandleFilteredData() {
+    function HandleData() {
+        let handledData = transactions.slice()
         if (filterText && filterText.length > 1) {
-            let filteredData = transactions.filter(item => item.associations.toLowerCase().includes(filterText.toLowerCase()))
-            resultCount = filteredData.length
-            return filteredData
+            handledData = handledData.filter(item =>
+                item.associations.toLowerCase().includes(filterText.toLowerCase())
+            )
         }
-        resultCount = transactions.length
-        return transactions
+
+        if (associationOrderType !== null) {
+            handledData = handledData.filter(item =>
+                item.isPositive == associationOrderType)
+        }
+
+        resultCount = handledData.length
+        return handledData
     }
 
+    function SetShowAllAssociations() {
+        setAssociationOrderType(null)
+    }
+
+    function SetShowStrongAssociations() {
+        setAssociationOrderType(1)
+    }
+
+    function SetShowLeastAssociations() {
+        setAssociationOrderType(0)
+    }
 
     useEffect(() => {
         GetTransactionsByGroupId()
@@ -263,15 +278,23 @@ function TransactionGroupDetail() {
 
                 <ul class="nav">
                     <li class="nav-item">
-                        <button onClick={null} type="button" class="btn btn-primary btn-sm">All</button>
+                        <button onClick={SetShowAllAssociations} type="button" class={associationOrderType == null ?
+                            "btn btn-sm btn-primary" : "btn btn-sm btn-secondary"}>Show all associations</button>
                     </li>
-                    <li class="nav-item">
-                        <button onClick={null} type="button" class="btn btn-primary btn-sm">Positive Associations</button>
+                    <li class="nav-item flex px-2">
+                        <button onClick={SetShowStrongAssociations} type="button" class={associationOrderType == 1 ?
+                            "btn btn-sm btn-primary" : "btn btn-sm btn-secondary"}>Show the most strong associations</button>
                     </li>
-                    <li class="nav-item">
-                        <button onClick={null} type="button" class="btn btn-primary btn-sm">Negative Associations</button>
+                    <li class="nav-item flex px-2">
+                        <button onClick={SetShowLeastAssociations} type="button" class={associationOrderType == 0 ?
+                            "btn btn-sm btn-primary" : "btn btn-sm btn-secondary"}>Show the least strong associations</button>
                     </li>
                 </ul>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <h2 >Result count: {resultCount}</h2>
+                </div>
+
                 {showEditAliasInput &&
                     <div className="row">
                         <div className="col">
@@ -295,7 +318,6 @@ function TransactionGroupDetail() {
                                 <input onChange={HandleFilterInputText} type="text" id="form3Example3" className="form-control form-control-lg"
                                     value={filterText} autoFocus />
                             </div>
-                            <p>Result count: {resultCount}</p>
                         </div>
                     </div>}
                 <p style={{ width: '80vw' }}></p>
@@ -312,7 +334,7 @@ function TransactionGroupDetail() {
                             </tr>
                         </thead>
                         <tbody >
-                            {HandleFilteredData().map((item, index) =>
+                            {HandleData().map((item, index) =>
                                 <tr key={index.toString()}>
                                     <td>{item.id}</td>
                                     <td>{item.associations.split(',').map((item, index) => <p key={index}>{item}</p>)}</td>
