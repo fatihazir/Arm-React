@@ -1,4 +1,5 @@
-export const baseUrlForEndpoint = 'https://localhost:5201/api'
+export const baseUrlForEndpoint = 'https://aspnetclusters-101958-0.cloudclusters.net/api'
+
 
 export const links = {
     login: '/auth/login',
