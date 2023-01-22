@@ -19,7 +19,7 @@ function Sidebar() {
     return <div className="border-end sidenav" id="sidebar-wrapper">
         <div className="sidebar-heading border-bottom text-center">
             <Link to="/">
-                <img style={{ width: '5vw' }} alt="Alt content" src={require('./../assets/images/logo.jpg')} />
+                <img style={{ width: '5vw' }} alt="Alt content" src={require('./../assets/images/logo.png')} />
             </Link>
         </div>
 

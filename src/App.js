@@ -1,7 +1,6 @@
 import 'font-awesome/css/font-awesome.min.css';
 import './assets/css/app.css';
 import HomePage from './pages/HomePage';
-import TypographyPage from './pages/TypographyPage'
 import LoginPage from './pages/auth/LoginPage'
 import Register from './pages/auth/Register';
 import ProfilePage from './pages/profile/ProfilePage';
@@ -20,7 +19,6 @@ function App() {
                 <Route exact path='/register' element={<Register />} />
                 <Route exact path='/profile' element={<ProfilePage />} />
                 <Route exact path='/change-password' element={<ChangePasswordPage />} />
-                <Route exact path='/typography' element={<TypographyPage />} />
                 <Route exact path='/transaction-group-detail' element={<TransactionGroupDetail />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
