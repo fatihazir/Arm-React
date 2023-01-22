@@ -16,7 +16,13 @@ class Apibase {
                 if (data.success) {
                     successFunction(data)
                 } else {
-                    errorFunction(data)
+                    if (data.message) {
+                        errorFunction(data)
+                    }
+                    else {
+                        data.message = data.title
+                        errorFunction(data)
+                    }
                 }
             })
             .catch((error) => {
@@ -38,7 +44,13 @@ class Apibase {
                 if (data.success) {
                     successFunction(data)
                 } else {
-                    errorFunction(data)
+                    if (data.message) {
+                        errorFunction(data)
+                    }
+                    else {
+                        data.message = data.title
+                        errorFunction(data)
+                    }
                 }
             })
             .catch((error) => {

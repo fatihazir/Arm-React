@@ -16,6 +16,7 @@ function ProfilePage() {
     const [email, setEmail] = useState(user.email)
     const [firstName, setFirstName] = useState(user.firstName)
     const [lastName, setLastName] = useState(user.lastName)
+    const [photoUrl, setPhotoUrl] = useState(user.photoUrl)
     const [showErrorModal, setShowErrorModal] = useState(false)
     const [errorModalBodyText, setErrorModalBodyText] = useState("")
     const [showOverlay, setShowOverlay] = useState(false)
@@ -30,7 +31,8 @@ function ProfilePage() {
         let body = {
             "Id": user.id,
             "FirstName": firstName,
-            "LastName": lastName
+            "LastName": lastName,
+            "PhotoUrl": photoUrl
         }
 
         Apibase.Post({
@@ -80,6 +82,14 @@ function ProfilePage() {
                     <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
                     <div className="input-group mb-3">
                         <input disabled value={email} type="text" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                        <span className="input-group-text" id="basic-addon2">@</span>
+                    </div>
+                </div>
+
+                <div className="col">
+                    <label htmlFor="exampleInputEmail1" className="form-label">Photo url</label>
+                    <div className="input-group mb-3">
+                        <input value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} type="text" className="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                         <span className="input-group-text" id="basic-addon2">@</span>
                     </div>
                 </div>
