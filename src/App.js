@@ -10,7 +10,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NotFound from './components/NotFound';
 
 function App() {
-    {/* Auth mantıklı bir router koy */ }
     return (
         <Router>
             <Routes >
